@@ -2,14 +2,18 @@
 'use client'
 import React from 'react'
 import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 import { Control } from 'react-hook-form'
 import { FormFieldType } from './forms/PatientForm'
 import { Input } from "@/components/ui/input"
+import Image from 'next/image'
 
 interface CustomProps {
   control: Control<any>,
@@ -26,25 +30,44 @@ interface CustomProps {
 }
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
-  switch (props.fieldType) {
+  const {fieldType, iconSrc, iconAlt, placeholder} = props
+  switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <Input
+        <div className='flex rounded-md border border-dark-500 bg-black'>
+          {
+            iconSrc && (
+              <Image
+              src={iconSrc}
+              alt={iconAlt || 'icon'}
+              width={24}
+              height={24}
+              className='ml-2'
+              />
+            )}
+      <FormControl>
+          <Input
           {...field}
           type="text"
-          placeholder={props.placeholder}
-          disabled={props.disable}
-          className="input-field"
-        />
+          placeholder={placeholder}
+          // disabled={props.disable}
+          className="bg-transparent outline-none border-0 shad-input"
+          />
+      </FormControl>
+          </div>
       )
-    case FormFieldType.TEXTAREA:
+    case FormFieldType.PHONE_INPUT:
       return (
-        <textarea
-          {...field}
-          placeholder={props.placeholder}
-          disabled={props.disable}
-          className="textarea-field"
-        />
+        // <textarea
+        //   {...field}
+        //   placeholder={props.placeholder}
+        //   disabled={props.disable}
+        //   className="textarea-field"
+        // />
+        <FormControl>
+          <PhoneInput/>
+
+        </FormControl>
       )
     // Add more cases for other field types
     default:
